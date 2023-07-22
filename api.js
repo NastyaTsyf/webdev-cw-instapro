@@ -68,3 +68,20 @@ export function uploadImage({ file }) {
     return response.json();
   });
 }
+
+// получает посты всех пользователей
+
+export function getAllPosts({ token }) {
+  return fetch("https://wedev-api.sky.pro/api/v1/prod/instapro", {
+      method: "GET",
+      headers: {
+        Authorization: token
+      }
+      })
+        .then((response) => {
+            return response.json();
+          }
+        )
+}
+
+

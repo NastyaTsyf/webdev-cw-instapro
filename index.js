@@ -118,9 +118,12 @@ const renderApp = () => {
   }
 
   if (page === POSTS_PAGE) {
-    return renderPostsPageComponent({
-      appEl,
+    renderPostsPageComponent({
+      appEl, token: getToken(), setPost: (newPost) => {
+        return posts = newPost;
+      }
     });
+    return 
   }
 
   if (page === USER_POSTS_PAGE) {

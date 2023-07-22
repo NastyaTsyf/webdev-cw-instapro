@@ -78,7 +78,11 @@ export function renderPostsPageComponent({ appEl, token, setPost }) {
       goToPage(USER_POSTS_PAGE, {
         userId: userEl.dataset.userId,
       });
+      let userPosts = posts.filter(item => item.userId === userEl.dataset.userId);
+      renderPostFeed (userPosts);
     });
+
+
   }
  }
 

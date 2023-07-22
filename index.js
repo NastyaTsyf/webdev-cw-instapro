@@ -71,6 +71,7 @@ export const goToPage = (newPage, data) => {
       console.log("Открываю страницу пользователя: ", data.userId);
       page = USER_POSTS_PAGE;
       posts = [];
+
       return renderApp();
     }
 
@@ -128,6 +129,7 @@ const renderApp = () => {
   }
 
   if (page === USER_POSTS_PAGE) {
+    
     // TODO: реализовать страницу фотографию пользвателя
     appEl.innerHTML = "Здесь будет страница фотографий пользователя";
     return;

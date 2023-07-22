@@ -15,7 +15,7 @@ export function renderPostsPageComponent({ appEl, token, setPost }) {
            avatar: posts.user.imageUrl,
            userId: posts.user.id,
            time: posts.createdAt,
-           text: posts.descriptions,
+           text: posts.description,
            photo: posts.imageUrl,
            postId: posts.id,
            isLiked: posts.isLiked,
@@ -23,7 +23,7 @@ export function renderPostsPageComponent({ appEl, token, setPost }) {
          }
        })
       setPost(allPosts);
-      console.log(posts); 
+      //console.log(posts); 
       renderPostFeed(posts);
      })
  };
@@ -45,7 +45,7 @@ export function renderPostsPageComponent({ appEl, token, setPost }) {
           <img src="./assets/images/like-active.svg">
         </button>
         <p class="post-likes-text">
-          Нравится: <strong>${post.likes.length + 1}</strong>
+          Нравится: <strong>${post.likes.length}</strong>
         </p>
       </div>
       <p class="post-text">
@@ -56,7 +56,7 @@ export function renderPostsPageComponent({ appEl, token, setPost }) {
       ${post.time}
       </p>
     </li>`}).join('');
-  console.log(listElHtml);
+  //console.log(listElHtml);
 
   const postFeedHtml = `
   <div class="page-container">
@@ -65,7 +65,7 @@ export function renderPostsPageComponent({ appEl, token, setPost }) {
   ${listElHtml}
   </ul>
   </div>`;
-  console.log(postFeedHtml);
+  //console.log(postFeedHtml);
 
   appEl.innerHTML = postFeedHtml;
 

@@ -30,9 +30,9 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
 
     appEl.innerHTML = appHtml;
 
-    //const setError = (message) => {
-    //  appEl.querySelector(".form-error").textContent = message;
-    //};
+    const setError = (message) => {
+      appEl.querySelector(".form-error").textContent = message;
+    };
 
     renderHeaderComponent({
       element: document.querySelector(".header-container"),
@@ -53,7 +53,11 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
     document.getElementById("add-button").addEventListener("click", () => {
       const postDescription = document.getElementById("postDescription-input").value;
       onAddPostClick({
-        description: postDescription,
+        description: postDescription
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;"),
         imageUrl: imageUrl,
       });
     });

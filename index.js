@@ -71,10 +71,8 @@ export const goToPage = (newPage, data) => {
       console.log("Открываю страницу пользователя: ", data.userId);
       page = USER_POSTS_PAGE;
       posts = [];
-
       return renderApp();
     }
-
     page = newPage;
     renderApp();
 
@@ -113,6 +111,15 @@ const renderApp = () => {
       onAddPostClick({ description, imageUrl }) {
         // TODO: реализовать добавление поста в API
         addPost({token: getToken(), description, imageUrl})
+        .catch((error) => {
+          if (error.message === "не передан description") {
+            alert("Вы не добавили описание или фотографию");
+            console.log(error);
+            goToPage(ADD_POSTS_PAGE);
+            return;
+          } 
+        });
+        
         console.log("Добавляю пост...", { description, imageUrl });
         goToPage(POSTS_PAGE);
       },
@@ -131,7 +138,7 @@ const renderApp = () => {
   if (page === USER_POSTS_PAGE) {
     
     // TODO: реализовать страницу фотографию пользвателя
-    appEl.innerHTML = "Здесь будет страница фотографий пользователя";
+    //appEl.innerHTML = "Здесь будет страница фотографий пользователя";
     return;
   }
 };

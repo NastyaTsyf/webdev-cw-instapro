@@ -84,6 +84,22 @@ export function getAllPosts({ token }) {
         )
 }
 
+// получает посты конкретного пользователя
+
+export function getUserPosts({ token, userId }) {
+  return fetch(postsHost + `/user-posts/${userId}`, {
+      method: "GET",
+      headers: {
+        Authorization: token
+      }
+      })
+        .then((response) => {
+            return response.json();
+          }
+        )
+}
+
+
 
 // добавляет новый пост
 
@@ -98,6 +114,35 @@ export function addPost ({ token, description, imageUrl }) {
       imageUrl,
     }),
   }).then((response) => {
+    if (response.status === 400) {
+      throw new Error("не передан description");
+    } else {
+      return response.json();
+    }
+  });
+}
+
+//добавляет лайк
+
+export function like ({  postId, token }) {
+  return fetch(postsHost + `/:${postId}/like`, {
+    method: "POST",
+    headers: {
+      Authorization: token
+    },
+  }).then((response) => {
     return response.json();
   });
 }
+
+export function dislike ({  postId, token }) {
+  return fetch(postsHost + `/:${postId}/dislike`, {
+    method: "POST",
+    headers: {
+      Authorization: token
+    },
+  }).then((response) => {
+    return response.json();
+  });
+}
+

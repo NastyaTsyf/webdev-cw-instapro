@@ -125,24 +125,32 @@ export function addPost ({ token, description, imageUrl }) {
 //добавляет лайк
 
 export function like ({  postId, token }) {
-  return fetch(postsHost + `/:${postId}/like`, {
+  return fetch(postsHost + `/${postId}/like`, {
     method: "POST",
     headers: {
       Authorization: token
     },
   }).then((response) => {
-    return response.json();
+    if (response.status === 401) {
+      throw new Error("пользователь не авторизован");
+    } else {
+      return response.json();
+    }
   });
 }
 
 export function dislike ({  postId, token }) {
-  return fetch(postsHost + `/:${postId}/dislike`, {
+  return fetch(postsHost + `/${postId}/dislike`, {
     method: "POST",
     headers: {
       Authorization: token
     },
   }).then((response) => {
-    return response.json();
+    if (response.status === 401) {
+      throw new Error("пользователь не авторизован");
+    } else {
+      return response.json();
+    }
   });
 }
 

@@ -1,4 +1,4 @@
-import { USER_POSTS_PAGE } from "../routes.js";
+import { POSTS_PAGE, USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { posts, goToPage } from "../index.js";
 import { dislike, getAllPosts, getUserPosts, like } from "../api.js";
@@ -7,21 +7,40 @@ export function renderPostsPageComponent({ appEl, token, setPost }) {
   // TODO: реализовать рендер постов из api
   console.log("Актуальный список постов:", posts);
 
-  const initLikeButton = (posts, token) => {
-    const likeButtons = document.querySelectorAll("like-button")
+  const initLikeButton = ( token, page, data) => {
+    const likeButtons = document.querySelectorAll(".like-button")
 
     for (const likeButton of likeButtons) {
       likeButton.addEventListener("click", () => {
         const index = likeButton.dataset.index;
         const postId = likeButton.dataset.postId;
-        //const isLiked = likeButton.dataset.isLiked;
 
         if (posts[index].isLiked === false) {
           like({postId, token})
-        } else {
+          .then(() => {
+            goToPage(page, data);
+          })
+          .catch((error) => {
+            if (error.message === "пользователь не авторизован") {
+              alert("Авторизуйтесь, чтобы поставить лайк");
+              console.log(error);
+              return;
+            } 
+          });
+        }  
+        if (posts[index].isLiked === true) {
           dislike({postId, token})
+          .then(() => {
+            goToPage(page, data);
+          }).catch((error) => {
+            if (error.message === "пользователь не авторизован") {
+              alert("Авторизуйтесь, чтобы поставить лайк");
+              console.log(error);
+              return;
+            } 
+          });
         }
-        renderPostFeed(posts);
+        renderPostsPageComponent({ appEl, token, setPost })
     })
   }
   }     
@@ -44,6 +63,7 @@ export function renderPostsPageComponent({ appEl, token, setPost }) {
          }
        })
       setPost(allPosts);
+      initLikeButton(token, POSTS_PAGE, {});
       //console.log(posts); 
       renderPostFeed(posts);
      })
@@ -62,7 +82,7 @@ export function renderPostsPageComponent({ appEl, token, setPost }) {
         <img class="post-image" src="${post.photo}">
       </div>
       <div class="post-likes">
-        <button data-post-id="${post.postId}" data-index="${index}" class="like-button">
+        <button data-post-id="${post.postId}" data-index="${index}" data-is-liked="${post.isLiked}" class="like-button">
         ${post.isLiked ? '<img src="./assets/images/like-active.svg">' : '<img src="./assets/images/like-not-active.svg">'}
         </button>
         <p class="post-likes-text">
@@ -89,6 +109,9 @@ export function renderPostsPageComponent({ appEl, token, setPost }) {
   //console.log(postFeedHtml);
 
   appEl.innerHTML = postFeedHtml;
+
+  //const page = POSTS_PAGE;
+  initLikeButton(token, POSTS_PAGE, {});
 
   renderHeaderComponent({
     element: document.querySelector(".header-container"),
@@ -118,6 +141,7 @@ export function renderPostsPageComponent({ appEl, token, setPost }) {
         })
        setPost(allUserPosts);
        console.log(allUserPosts); 
+       initLikeButton(token, USER_POSTS_PAGE, {});
        renderPostFeed(allUserPosts);
       })
     });
@@ -125,9 +149,6 @@ export function renderPostsPageComponent({ appEl, token, setPost }) {
 
   }
  }
- initLikeButton(posts, token);
-
-
 
 
   /**

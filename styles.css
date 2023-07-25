@@ -196,3 +196,7 @@
   width: 100%;
   text-align: center;
 }
+
+.big-input {
+  width: 150px;
+}

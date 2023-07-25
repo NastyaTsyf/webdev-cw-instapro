@@ -1,4 +1,4 @@
-import { getPosts } from "./api.js";
+import { addPost, getPosts } from "./api.js";
 import { renderAddPostPageComponent } from "./components/add-post-page-component.js";
 import { renderAuthPageComponent } from "./components/auth-page-component.js";
 import {
@@ -73,7 +73,6 @@ export const goToPage = (newPage, data) => {
       posts = [];
       return renderApp();
     }
-
     page = newPage;
     renderApp();
 
@@ -111,6 +110,16 @@ const renderApp = () => {
       appEl,
       onAddPostClick({ description, imageUrl }) {
         // TODO: реализовать добавление поста в API
+        addPost({token: getToken(), description, imageUrl})
+        .catch((error) => {
+          if (error.message === "не передан description") {
+            alert("Вы не добавили описание или фотографию");
+            console.log(error);
+            goToPage(ADD_POSTS_PAGE);
+            return;
+          } 
+        });
+        
         console.log("Добавляю пост...", { description, imageUrl });
         goToPage(POSTS_PAGE);
       },
@@ -118,14 +127,18 @@ const renderApp = () => {
   }
 
   if (page === POSTS_PAGE) {
-    return renderPostsPageComponent({
-      appEl,
+    renderPostsPageComponent({
+      appEl, token: getToken(), setPost: (newPost) => {
+        return posts = newPost;
+      }
     });
+    return 
   }
 
   if (page === USER_POSTS_PAGE) {
+    
     // TODO: реализовать страницу фотографию пользвателя
-    appEl.innerHTML = "Здесь будет страница фотографий пользователя";
+    //appEl.innerHTML = "Здесь будет страница фотографий пользователя";
     return;
   }
 };

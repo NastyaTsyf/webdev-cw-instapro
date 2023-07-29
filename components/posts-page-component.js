@@ -2,6 +2,7 @@ import { POSTS_PAGE, USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { posts, goToPage } from "../index.js";
 import { dislike, getAllPosts, getUserPosts, like } from "../api.js";
+import { formatDistanceToNow } from "date-fns";
 
 export function renderPostsPageComponent({ appEl, token, setPost }) {
   // TODO: реализовать рендер постов из api
@@ -54,7 +55,7 @@ export function renderPostsPageComponent({ appEl, token, setPost }) {
            name: posts.user.name,
            avatar: posts.user.imageUrl,
            userId: posts.user.id,
-           time: posts.createdAt,
+           time: formatDistanceToNow(new Date(posts.createdAt)),
            text: posts.description,
            photo: posts.imageUrl,
            postId: posts.id,

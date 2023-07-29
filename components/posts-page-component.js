@@ -55,7 +55,7 @@ export function renderPostsPageComponent({ appEl, token, setPost }) {
            name: posts.user.name,
            avatar: posts.user.imageUrl,
            userId: posts.user.id,
-           time: formatDistanceToNow(posts.createdAt),
+           time: formatDistanceToNow(new Date(posts.createdAt)),
            text: posts.description,
            photo: posts.imageUrl,
            postId: posts.id,
